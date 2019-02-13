@@ -12,7 +12,7 @@ subprojects {
     apply plugin: 'java'
 
     group 'com.apigcc'
-    version '1.6'
+    version 'xiao-zh-1.6'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8

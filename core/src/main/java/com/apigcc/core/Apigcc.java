@@ -4,6 +4,7 @@ import com.apigcc.core.common.loging.Logger;
 import com.apigcc.core.common.loging.LoggerFactory;
 import com.apigcc.core.handler.TreeHandler;
 import com.apigcc.core.schema.Bucket;
+import com.apigcc.core.schema.Group;
 import com.apigcc.core.visitor.Framework;
 import com.github.javaparser.ParseResult;
 import com.github.javaparser.ParserConfiguration;
@@ -14,17 +15,22 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeS
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
 import com.github.javaparser.utils.SourceRoot;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 🐷 工具入口类、上下文
  */
 public class Apigcc extends Context {
+
+    private Set<String> generateGroup;
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -45,6 +51,7 @@ public class Apigcc extends Context {
         this.tree.setVersion(options.getVersion());
         this.tree.setBucket(new Bucket(options.getId()));
         this.getIgnoreTypes().addAll(options.getIgnores());
+        this.generateGroup = options.getGenerateGroups();
     }
 
     /**
@@ -92,6 +99,15 @@ public class Apigcc extends Context {
                 .map(g -> g.getNodes().size())
                 .reduce(0, (sum, i) -> sum += i);
         log.info("\r\nFound {} Controllers, {} Endpoints", tree.getBucket().getGroups().size(), totalNodes);
+
+        List<Group> list = tree.getBucket().getGroups().stream().filter(e -> {
+            if(generateGroup.isEmpty()) {
+                return true;
+            }
+            return generateGroup.contains(e.getId());
+        }).collect(Collectors.toList());
+
+        tree.getBucket().setGroups(list);
 
         return this;
     }

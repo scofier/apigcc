@@ -1,11 +1,6 @@
 package com.apigcc.core.visitor.jfinal;
 
 
-import com.apigcc.core.handler.postman.schema.Method;
-import com.apigcc.core.http.HttpMessage;
-import com.apigcc.core.resolver.ast.Clazz;
-import com.apigcc.core.schema.Bucket;
-import com.apigcc.core.schema.Group;
 import com.apigcc.core.schema.Node;
 import com.apigcc.core.schema.Tree;
 import com.apigcc.core.visitor.NodeVisitor;
@@ -14,10 +9,7 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.SimpleName;
 import com.github.javaparser.ast.stmt.BlockStmt;
-import com.sun.tools.internal.ws.wsdl.document.soap.SOAPUse;
-import com.sun.webkit.network.URLs;
 
-import java.rmi.server.RMIClientSocketFactory;
 import java.util.ArrayList;
 import java.util.List;
 

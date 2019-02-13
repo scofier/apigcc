@@ -77,6 +77,8 @@ public class Options {
 
     private Set<String> ignores;
 
+    private Set<String> generateGroups = Sets.newHashSet();;
+
     public Options project(Path value) {
         this.project = value;
         return this;
@@ -164,6 +166,11 @@ public class Options {
 
     public Options ignore(String... values) {
         ignores = Sets.newHashSet(values);
+        return this;
+    }
+
+    public Options generateGroup(String... values) {
+        generateGroups = Sets.newHashSet(values);
         return this;
     }
 
