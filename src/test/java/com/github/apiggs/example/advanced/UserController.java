@@ -76,7 +76,7 @@ public class UserController extends BaseController {
      * @return
      */
     @RequestMapping("/list")
-    public ResultData<List<User>> list(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int size) {
+    public ResultData<List<User>> list(@RequestParam(defaultValue = "1", required = false) int page, @RequestParam(defaultValue = "20") int size) {
         return ResultData.ok();
     }
 
@@ -127,6 +127,15 @@ public class UserController extends BaseController {
         return ResultData.ok();
     }
 
+    @GetMapping("/getRoleById")
+    public ResultData<Integer> getRoleById(Integer id){
+        return ResultData.ok();
+    }
+
+    @GetMapping("/getRoleByIdParam")
+    public ResultData<Integer> getRoleByIdParam(@RequestParam("id") Integer id){
+        return ResultData.ok();
+    }
     /**
      * 批量上传用户信息
      * @param list

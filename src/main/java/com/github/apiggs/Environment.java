@@ -39,7 +39,8 @@ public class Environment {
     /**
      * 默认的文档构建器
      */
-    public static Iterable<TreeHandler> DEFAULT_PIPELINE = Lists.newArrayList(new PostmanTreeHandler(), new AsciidocTreeHandler(), new HtmlTreeHandler());
+//    public static Iterable<TreeHandler> DEFAULT_PIPELINE = Lists.newArrayList(new PostmanTreeHandler(), new AsciidocTreeHandler(), new HtmlTreeHandler());
+    public static Iterable<TreeHandler> DEFAULT_PIPELINE = Lists.newArrayList(new AsciidocTreeHandler(), new HtmlTreeHandler());
 
 
     private enum Framework {
@@ -110,6 +111,8 @@ public class Environment {
     private Path out = DEFAULT_OUT;
 
     private String css;
+
+    private Set<String> controller = Sets.newHashSet();
 
     /**
      * 忽略哪些类型的参数、类解析
@@ -206,6 +209,15 @@ public class Environment {
     public Environment ignore(String... values) {
         getIgnoreTypes().addAll(Sets.newHashSet(values));
         return this;
+    }
+
+    public Environment controller(String... values) {
+        getController().addAll(Sets.newHashSet(values));
+        return this;
+    }
+
+    public Set<String> getController() {
+        return controller;
     }
 
     public Environment css(String css) {

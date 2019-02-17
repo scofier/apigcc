@@ -12,6 +12,8 @@ import com.github.javaparser.utils.SourceRoot;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 🐷 工具入口类、上下文
@@ -68,6 +70,15 @@ public class Apiggs {
                 .map(g -> g.getNodes().size())
                 .reduce(0, (sum, i) -> sum += i);
         log.info("\r\nFound {} Controllers, {} Endpoints", tree.getBucket().getGroups().size(), totalNodes);
+
+        List<Group> list = tree.getBucket().getGroups().stream().filter(e -> {
+            if(env.getController().isEmpty()) {
+                return true;
+            }
+            return env.getController().contains(e.getId());
+        }).collect(Collectors.toList());
+
+        tree.getBucket().setGroups(list);
 
         return this;
     }

@@ -14,10 +14,10 @@ import com.github.javaparser.resolution.declarations.ResolvedTypeParameterDeclar
 import com.github.javaparser.resolution.types.ResolvedReferenceType;
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.resolution.types.ResolvedTypeVariable;
+import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserEnumDeclaration;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserFieldDeclaration;
 import com.github.javaparser.symbolsolver.model.typesystem.ReferenceTypeImpl;
 import com.github.javaparser.utils.Pair;
-import com.google.common.base.Strings;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -206,7 +206,7 @@ public class ResolvedTypes {
         if (typeDeclaration.isEnum()) {
             //枚举类型
             primitive = true;
-            value = "";
+            value = ((JavaParserEnumDeclaration)typeDeclaration).getWrappedNode().getEntries();
         } else if (Types.Collections.isAssignableBy(typeDeclaration)) {
             resolveCollection(typeParametersMap);
         } else if (Types.Maps.isAssignableBy(typeDeclaration)) {
