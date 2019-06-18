@@ -1,5 +1,5 @@
 group 'com.github.apiggs'
-version '1.6'
+version '1.6.3-SNAPSHOT'
 
 ext {
     DESCRIPTION = 'A rest document generator with parse the source code.'
@@ -61,8 +61,8 @@ publish {
     publishVersion = version
     desc = project.DESCRIPTION
     website = project.SITE_URL
-    bintrayUser = project.BINTRAYUSER
-    bintrayKey = project.BINTRAYKEY
+//    bintrayUser = project.BINTRAYUSER
+//    bintrayKey = project.BINTRAYKEY
     dryRun = false
 }
 
@@ -101,5 +101,24 @@ gradle.taskGraph.whenReady { taskGraph ->
                 }
             }
         }.writeTo("build/publications/maven/pom-default.xml")
+    }
+}
+
+uploadArchives {
+    def repoUrl = 'file://' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath
+    if (project.version.contains("SNAPSHOT")){
+        repoUrl = 'https://repo.rdc.aliyun.com/repository/1339-snapshot-5fVKFO/'
+    }else {
+        repoUrl = 'https://repo.rdc.aliyun.com/repository/1339-release-s3QR2B/'
+    }
+    repositories {
+        mavenDeployer {
+            repository(url:repoUrl) {
+                authentication(userName: "4bAibm", password: "pfz73CSzOg")
+            }
+            pom.version = "$project.version"
+            pom.artifactId = "$project.name"
+            pom.groupId = "$project.group"
+        }
     }
 }

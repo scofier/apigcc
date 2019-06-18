@@ -39,7 +39,11 @@ public class Environment {
     /**
      * 默认的文档构建器
      */
-    public static Iterable<TreeHandler> DEFAULT_PIPELINE = Lists.newArrayList(new PostmanTreeHandler(), new AsciidocTreeHandler(), new HtmlTreeHandler());
+    public static Iterable<TreeHandler> DEFAULT_PIPELINE = Lists.newArrayList(
+//            new PostmanTreeHandler()
+            new AsciidocTreeHandler()
+//            ,new HtmlTreeHandler()
+    );
 
 
     private enum Framework {

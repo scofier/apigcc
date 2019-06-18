@@ -33,6 +33,14 @@ public class Cell<T> {
         return values;
     }
 
+    public List<T> selectByIndex(int... idx) {
+        List<T> ret = Lists.newArrayList();
+        for(int i: idx) {
+            ret.add(values.get(i));
+        }
+        return ret;
+    }
+
     public boolean isEnable() {
         return enable;
     }

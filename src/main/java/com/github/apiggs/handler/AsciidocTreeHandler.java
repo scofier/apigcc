@@ -34,11 +34,13 @@ public class AsciidocTreeHandler implements TreeHandler {
     private Logger log = LoggerFactory.getLogger(this.getClass());
     private MarkupBuilder builder = MarkupBuilder.getInstance();
 
+    private Environment env;
+    private List<CharSequence> attrs;
 
     @Override
     public void handle(Tree tree, Environment env) {
 
-        List<CharSequence> attrs = Lists.newArrayList(
+        attrs = Lists.newArrayList(
                 attr(DOCTYPE, BOOK),
                 attr(TOC, LEFT), attr(TOC_LEVEL, 3), attr(TOC_TITLE, "目录"),
                 attr(SOURCE_HIGHLIGHTER, HIGHLIGHTJS));
@@ -56,6 +58,8 @@ public class AsciidocTreeHandler implements TreeHandler {
             builder.paragraph(tree.getReadme());
         }
 
+        this.env = env;
+
         if (tree.getBuckets().isEmpty()) {
             for (Group group : tree.getBucket().getGroups()) {
                 //build 成功时，章节号往后加1，否则加0
@@ -68,6 +72,7 @@ public class AsciidocTreeHandler implements TreeHandler {
             }
         }
 
+
         if (!tree.getAppendices().isEmpty()) {
             builder.title(1, "附录");
             for (Appendix appendix : tree.getAppendices()) {
@@ -77,7 +82,10 @@ public class AsciidocTreeHandler implements TreeHandler {
                 }
             }
         }
+        //buildAdoc(env);
+    }
 
+    private void buildAdoc(Environment env) {
         try {
             Path adoc = env.getOutPath().resolve(env.getId() + EXTENSION);
             write(adoc, builder.getContent(), StandardCharsets.UTF_8);
@@ -106,6 +114,10 @@ public class AsciidocTreeHandler implements TreeHandler {
             for (HttpMessage httpMessage : group.getNodes()) {
                 buildHttpMessage(httpMessage, level + 1);
             }
+
+            env.id(group.getId());
+            buildAdoc(env);
+            builder.header("目录", attrs.toArray(new CharSequence[0]));
         }
     }
 
@@ -154,8 +166,10 @@ public class AsciidocTreeHandler implements TreeHandler {
     private void ntcdd(List<Cell<String>> cells) {
         if (cells.size() > 0) {
             List<List<String>> responseTable = new ArrayList<>();
-            responseTable.add(Arrays.asList("名称", "类型", "校验", "默认", "描述"));
-            cells.forEach(parameter -> responseTable.add(parameter.toList()));
+            responseTable.add(Arrays.asList("名称", "类型", "描述"));
+//            responseTable.add(Arrays.asList("名称", "类型", "校验", "默认", "描述"));
+//            cells.forEach(parameter -> responseTable.add(parameter.toList()));
+            cells.forEach(parameter -> responseTable.add(parameter.selectByIndex(0,1,4)));
             builder.table(responseTable);
         }
     }
